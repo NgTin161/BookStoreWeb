@@ -14,10 +14,12 @@ import TabCategory from './TabCategory';
 import { axiosJson } from '../../../axios/AxiosCustomize';
 import Partner from './Partner';
 import ShippingPolicy from './ShippingPolicy';
+import PopupRegister from './PopupRegister';
 
 
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [slideshow, setSlideshow] = useState([]);
 
   const [newBook, setNewBook] = useState([]);
@@ -44,10 +46,10 @@ const Home = () => {
     setShippingPolicy(response.data);
   }
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) {
-      setIsModalOpen(true);
-    }
+    // const jwt = localStorage.getItem('jwt');
+    // if (!jwt) {
+    //   setIsModalOpen(true);
+    // }
 
     fetchSlideshow();
     fetchNewBook(); 
@@ -114,7 +116,8 @@ const Home = () => {
    <Partner/>
 
    <ShippingPolicy shippingPolicy={shippingPolicy} />
-    <PopupLogin setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
+    {/* <PopupLogin setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/> */}
+   
     </div>
     </>
   );

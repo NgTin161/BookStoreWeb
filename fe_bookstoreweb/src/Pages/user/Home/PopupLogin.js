@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { jwtDecode } from 'jwt-decode';
 
-const PopupLogin = ({setIsModalOpen, isModalOpen}) => {
+const PopupLogin = ({setIsModalOpen, isModalOpen, setIsModalRegisterOpen, isModalRegisterOpen}) => {
     const [form] = Form.useForm();
     const { login } = useContext(AuthContext);
 
@@ -30,14 +30,15 @@ const PopupLogin = ({setIsModalOpen, isModalOpen}) => {
                 // Giải mã token để lấy thông tin vai trò
                 const decodedToken = jwtDecode(token);
                 const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-    
+                   setIsModalOpen(false);
                 // Điều hướng dựa trên vai trò
-                if (role === 'Admin') {
-                    window.location.href = '/admin';
-                } else {
-                    window.location.href = '/';
+                // if (role === 'Admin') {
+                //     window.location.href = '/admin';
+                // } else {
+                //     window.location.href = '/';
+                // }
                 }
-            } else if (response.status === 403) {
+               else if (response.status === 403) {
                 toast.error('Tài khoản của bạn không hoạt động');
             } else if (response.status === 404) {
                 toast.error('Sai tên đăng nhập hoặc mật khẩu');
@@ -76,6 +77,11 @@ const PopupLogin = ({setIsModalOpen, isModalOpen}) => {
   
       const handleCancel = () => {
         setIsModalOpen(false);
+      };
+
+      const handleOpenRegister = () => {
+        setIsModalOpen(false);
+        setIsModalRegisterOpen(true);
       };
     return (
         <>
@@ -118,18 +124,18 @@ const PopupLogin = ({setIsModalOpen, isModalOpen}) => {
                             />
                         </Form.Item>
 
-                        <div style={{ display: 'flex' }}>
-                            <Link to="/forgot-password" style={{ color: 'black' }}>
+                        <div style={{ display: 'flex', justifyContent:'flex-end', padding: '10px' }}>
+                            <Link to="/forgot-password" style={{ color: 'black' , textDecoration: 'none' }}>
                                 Quên mật khẩu?
                             </Link>
                         </div>
-                        <div className='pass'>
+                        {/* <div className='pass'>
                             <Form.Item name="remember" valuePropName="checked" noStyle>
                                 <label style={{ color: 'black' }}>
                                     <input type="checkbox" id="rememberMe" />  Nhớ mật khẩu
                                 </label>
                             </Form.Item>
-                        </div>
+                        </div> */}
                         <div >
                             <Button type="primary" htmlType="submit" style={{ width: '100%', height: '50px' }}>
                                 ĐĂNG NHẬP
@@ -157,7 +163,7 @@ const PopupLogin = ({setIsModalOpen, isModalOpen}) => {
                     </div>
                     <div className="signup" style={{ color: 'black' }}>
                         Bạn chưa có tài khoản?
-                        <a href="/register"> Đăng ký ngay</a>
+                        <a style={{textDecoration: 'none'}} onClick={()=>{handleOpenRegister()}}> Đăng ký ngay</a>
                     </div>
                 
             

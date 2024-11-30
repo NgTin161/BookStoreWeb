@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../../Context/AuthContext';
+import { axiosJson } from '../../../axios/AxiosCustomize';
 
 const Wishlist = () => {
   const { user } = useContext(AuthContext);
@@ -16,7 +18,7 @@ const Wishlist = () => {
     }
   };
 
-  
+
   useEffect(() => {
     if (user?.id) {
       fetchData();

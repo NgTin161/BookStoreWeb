@@ -78,21 +78,14 @@ const items = [
 
   
   getItem(
-    <Link to="/admin/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
+    <Link to="/admin/slideshow-manager" style={{ color: '#379AE6', textDecoration: 'none' }}>
       Quản lý slideshow
     </Link>,
     "7",
     <DesktopOutlined style={{ color: '#379AE6' }} />
   ),
   
-  getItem(
-    <Link to="/admin/booking" style={{ color: '#379AE6', textDecoration: 'none' }}>
-      Quản lý danh mục
-    </Link>,
-    "8",
-    <DesktopOutlined style={{ color: '#379AE6' }} />
-  ),
-
+  
 
 ];
 

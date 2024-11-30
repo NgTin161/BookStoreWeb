@@ -9,6 +9,10 @@ import { faBell, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icon
 import { ShoppingCartOutlined, BookOutlined, CoffeeOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
+import { axiosJson } from '../axios/AxiosCustomize';
+import { toast } from 'react-toastify';
+import PopupRegister from '../Pages/user/Home/PopupRegister';
+import PopupLogin from '../Pages/user/Home/PopupLogin';
 
 const Header = ({ data }) => {
     const [selectedCategory, setSelectedCategory] = useState('Book');
@@ -19,6 +23,9 @@ const Header = ({ data }) => {
     const token = localStorage.getItem('jwt');
     const decodedToken = token ? jwtDecode(token) : null;
 
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
     useEffect(() => {
         if (decodedToken) {
             const roles = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
@@ -34,21 +41,40 @@ const Header = ({ data }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('jwt');
-        window.location.href = '/login';
+        window.location.href = '/';
     };
 
+    const [parentCategories, setParentCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    
+    
+
+    const fetchParentCategories = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosJson.get('/Home/get-father-category');
+        setParentCategories(response.data);
+    
+      } catch (error) {
+        toast.error('Lỗi khi tải danh mục cha!');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      fetchParentCategories(); // Fetch danh mục khi component được render
+    }, []);
+  
+    // Tạo Menu từ danh mục cha
     const menu = (
-        <Menu onClick={handleMenuClick}>
-            <Menu.Item key="Book">
-                <BookOutlined /> Book
-            </Menu.Item>
-            <Menu.Item key="Coffee">
-                <CoffeeOutlined /> Coffee
-            </Menu.Item>
-            <Menu.Item key="Cart">
-                <ShoppingCartOutlined /> Cart
-            </Menu.Item>
-        </Menu>
+      <Menu>
+        {parentCategories.map((category) => (
+          <Menu.Item key={category.id} >
+            {category.nameCategory}
+          </Menu.Item>
+        ))}
+      </Menu>
     );
 
     const getMenuForRoles = (roles) => {
@@ -58,7 +84,7 @@ const Header = ({ data }) => {
             menuItems.push(
                 <Menu.Item key="statistics">
                     <Link to="/admin/dashboard" style={{ textDecoration: 'none' }}>
-                        Thống kê
+                        Quản lý trang web
                     </Link>
                 </Menu.Item>
             );
@@ -115,16 +141,18 @@ const Header = ({ data }) => {
 
     const UserMenu = (
         <Menu>
-            <Menu.Item key="1">
-                <Link to="/dang-nhap" style={{ textDecoration: 'none' }}>Đăng nhập</Link>
+            <Menu.Item key="1" onClick={()=>{setIsModalOpen(true)}}>
+                Đăng nhập
             </Menu.Item>
-            <Menu.Item key="2">
-                <Link to="/dang-ky" style={{ textDecoration: 'none' }}>Đăng ký</Link>
+            <Menu.Item key="2" onClick={()=>{setIsModalRegisterOpen(true)}}>
+               Đăng ký
             </Menu.Item>
         </Menu>
     );
 
     return (
+
+        <>
         <header
             style={{
                 padding: '10px',
@@ -188,7 +216,7 @@ const Header = ({ data }) => {
                         <a style={{ color: '#379AE6FF' }} href="/about">
                             Về chúng tôi
                         </a>
-                        {role && (
+                        {fullName && (
                             <a style={{ color: '#379AE6FF' }} href="">
                                 Xin chào {fullName}
                             </a>
@@ -231,6 +259,9 @@ const Header = ({ data }) => {
                 </Dropdown>
             </div>
         </header>
+          <PopupLogin setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} setIsModalRegisterOpen={setIsModalRegisterOpen} isModalRegisterOpen={isModalRegisterOpen}/>
+          <PopupRegister setIsModalRegisterOpen={setIsModalRegisterOpen} isModalRegisterOpen={isModalRegisterOpen} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
+        </>
     );
 };
 

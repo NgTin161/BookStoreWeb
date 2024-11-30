@@ -17,6 +17,7 @@ import { axiosJson } from '../../../axios/AxiosCustomize';
 import { Helmet } from 'react-helmet';
 import { AuthContext } from '../../../Context/AuthContext';
 import { toast } from 'react-toastify';
+import PopupLogin from '../Home/PopupLogin';
 
 
 
@@ -32,7 +33,7 @@ const Details = () => {
   const descriptionRef = useRef(null);
 
   const [isFavorite, setIsFavorite] = useState(false);
-
+const [isModalOpen, setIsModalOpen] = useState(false);
   const fetchData = async () => {
       const response = await axiosJson.get(`/Books/get-book-by-slug?slug=${bookslug}`);
       console.log(response.data);
@@ -76,8 +77,7 @@ const Details = () => {
 const handleWishlist = async () => {
   console.log('mới nhấn');
   if (!user?.id) {
-    
-    navigate('/dang-nhap');
+    setIsModalOpen(true);
     toast.info('Vui lòng đăng nhập');
     return; // Thoát khỏi hàm nếu người dùng chưa đăng nhập
   }
@@ -102,6 +102,23 @@ const handleWishlist = async () => {
   }
 };
 
+
+const handleBuyNow = async () => {
+  console.log('mới nhấn');
+  if (!user?.id) {
+    setIsModalOpen(true);
+    toast.info('Vui lòng đăng nhập');
+    return; // Thoát khỏi hàm nếu người dùng chưa đăng nhập
+  }}
+
+  const handleAddCart = async () => {
+    console.log('mới nhấn');
+    if (!user?.id) {
+      setIsModalOpen(true);
+      toast.info('Vui lòng đăng nhập');
+      return; // Thoát khỏi hàm nếu người dùng chưa đăng nhập
+    }}
+
 const handleCardClick = (slugDetail) => {
   navigate(`/${slugDetail}`); 
 };
@@ -110,8 +127,6 @@ const handleCardClick = (slugDetail) => {
 
   useEffect(() => {
     fetchData();
-  
-    
   }, [ bookslug]); 
 
   useEffect(() => {
@@ -255,10 +270,10 @@ const handleCardClick = (slugDetail) => {
 
           
           <div style={{display:'flex', gap:10}}>
-            <Button style={{ borderColor: '#379AE6FF', color: '#379AE6FF', height: '50px', width: '180px' }}>
+            <Button onClick={handleAddCart} style={{ borderColor: '#379AE6FF', color: '#379AE6FF', height: '50px', width: '180px' }}>
               <FontAwesomeIcon icon={faCartShopping} fontSize={20} /> Thêm vào giỏ hàng
             </Button>
-            <Button style={{ height: '50px', width: '180px', backgroundColor: '#379AE6FF', color: 'white' }}>
+            <Button onClick={handleBuyNow} style={{ height: '50px', width: '180px', backgroundColor: '#379AE6FF', color: 'white' }}>
               Mua ngay
             </Button>
             </div>
@@ -419,6 +434,8 @@ const handleCardClick = (slugDetail) => {
           </div>
         )}
       </Modal>
+
+      <PopupLogin setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
     </>
   );
 };
