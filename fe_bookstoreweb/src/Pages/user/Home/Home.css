@@ -1,0 +1,44 @@
+
+
+img {
+ width: 120px;
+ height: 100px;
+}
+
+.arrow-left {
+    display: block;
+    position: absolute;
+    left: -20px;
+    z-index: 1;
+    font-size: 30px;
+    color: black;
+    cursor: 'pointer';
+    top: 50%;
+    transform:translateY(-50%)' // Center the arrow vertically
+}
+.arrow-right {
+    display: block;
+    position: absolute;
+    right: -16px;
+    z-index: 1;
+    font-size: 30px;
+    color: black;
+    cursor: 'pointer';
+    top: 50%;
+    transform:translateY(-50%)' // Center the arrow vertically
+}
+
+
+/* Đảm bảo chiều rộng của container */
+.slideshow-container {
+    width: 100%;     /* Đảm bảo chiếm toàn bộ chiều rộng */
+    max-width: 1000px; /* Tùy chỉnh chiều rộng tối đa nếu cần */
+    margin: 0 auto;  /* Căn giữa container */
+  }
+  
+  /* Đảm bảo hình ảnh không bị vỡ hoặc mất tỷ lệ */
+  .swiper-slide img {
+    width: 100%;  /* Đảm bảo hình ảnh chiếm 100% chiều rộng của slide */
+    height: auto; /* Giữ tỷ lệ của hình ảnh */
+  }
+  

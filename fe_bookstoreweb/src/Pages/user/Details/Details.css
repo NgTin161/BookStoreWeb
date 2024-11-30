@@ -1,0 +1,6 @@
+/* Đổi màu mũi tên */
+.slick-prev:before,
+.slick-next:before {
+  color: #379AE6FF; /* Đổi màu theo ý muốn */
+  font-size: 24px;  /* Thay đổi kích thước nếu cần */
+}
